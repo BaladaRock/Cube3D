@@ -4,14 +4,14 @@ namespace Assets.Scripts
 {
     public class RubiksCube : MonoBehaviour
     {
-        [SerializeField] private readonly GameObject _piecePrefab;
+        [SerializeField] private GameObject _piecePrefab;
 
         public RubiksCube(GameObject piecePrefab)
         {
-            _piecePrefab = piecePrefab;
+            this._piecePrefab = piecePrefab;
         }
 
-        const float step = 1.05f;
+        private const float Step = 1.05f;
 
         private void Awake()
         {
@@ -20,7 +20,7 @@ namespace Assets.Scripts
             for (var z = -1; z <= 1; z++)
             {
                 var go = Instantiate(_piecePrefab, transform);
-                go.transform.localPosition = new Vector3(x * step, y * step, z * step);
+                go.transform.localPosition = new Vector3(x * Step, y * Step, z * Step);
 
                 var piece = go.GetComponent<CubePiece>();
                 piece.Index = new Vector3Int(x + 1, y + 1, z + 1);
