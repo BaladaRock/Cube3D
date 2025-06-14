@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Helpers;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public enum Axis { X, Y, Z }
-
     public class CubeManager : MonoBehaviour
     {
         public float RotationTime = 0.25f;
@@ -14,7 +13,7 @@ namespace Assets.Scripts
 
         private Transform _pivot;
         private readonly CubePiece[,,] _grid = new CubePiece[3, 3, 3];
-        private readonly Queue<IEnumerator> _moveQueue = new Queue<IEnumerator>();
+        private readonly Queue<IEnumerator> _moveQueue = new();
         private bool _running;
 
 
@@ -73,7 +72,7 @@ namespace Assets.Scripts
             }
 
             // pivot fixing
-            _pivot.localPosition = LayerCenter(axis, layer);
+            _pivot.localPosition = CubeHelpers.LayerCenter(axis, layer, Step);
             _pivot.localRotation = Quaternion.identity;
 
             // reparent
@@ -81,7 +80,7 @@ namespace Assets.Scripts
 
             // animation
             var start = Quaternion.identity;
-            var end = Quaternion.AngleAxis((cw ? -90 : 90), AxisVector(axis));
+            var end = Quaternion.AngleAxis((cw ? -90 : 90), CubeHelpers.AxisVector(axis));
 
             float t = 0;
             while (t < 1f)
@@ -103,21 +102,35 @@ namespace Assets.Scripts
             _running = false;
         }
 
-        // helpers
-        private static Vector3 AxisVector(Axis a) =>
-            a switch
-            {
-                Axis.X => Vector3.right,
-                Axis.Y => Vector3.up,
-                _ => Vector3.forward
-            };
-
-        private Vector3 LayerCenter(Axis a, int l)
+        public void RotateByWorldDirection(Vector3 worldDir, bool clockwise)
         {
-            var off = (l - 1) * Step;            // −1,0,+1
-            return a == Axis.X ? new Vector3(off, 0, 0) :
-                a == Axis.Y ? new Vector3(0, off, 0) :
-                new Vector3(0, 0, off);
+            var local = transform.InverseTransformDirection(worldDir).normalized;
+
+            Axis axis;
+            int layer;
+
+            if (Mathf.Abs(local.x) > Mathf.Abs(local.y) &&
+                Mathf.Abs(local.x) > Mathf.Abs(local.z))
+            {
+                axis = Axis.X;
+                layer = local.x > 0 ? 2 : 0;               
+                clockwise = local.x > 0 ? clockwise : !clockwise;
+            }
+            else if (Mathf.Abs(local.y) > Mathf.Abs(local.z))
+            {
+                axis = Axis.Y;
+                layer = local.y > 0 ? 2 : 0;             
+                clockwise = local.y > 0 ? clockwise : !clockwise;
+            }
+            else
+            {
+                axis = Axis.Z;
+                layer = local.z > 0 ? 2 : 0;            
+                clockwise = local.z > 0 ? clockwise : !clockwise;
+            }
+
+            EnqueueRotation(axis, layer, clockwise);
         }
+
     }
 }

@@ -1,3 +1,4 @@
+using Assets.Scripts.Helpers;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -15,26 +16,41 @@ namespace Assets.Scripts
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F)) _manager.EnqueueRotation(Axis.Z, 2, true); 
-            if (Input.GetKeyDown(KeyCode.U)) _manager.EnqueueRotation(Axis.Y, 2, true); 
-            if (Input.GetKeyDown(KeyCode.R)) _manager.EnqueueRotation(Axis.X, 2, false);
+            // Keyboard controls for rotations
 
-            // arrow controls for rotation
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-                _manager.EnqueueRotation(Axis.Z, 2, true);
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-                _manager.EnqueueRotation(Axis.Z, 2, false);
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-                _manager.EnqueueRotation(Axis.Y, 2, true);
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-                _manager.EnqueueRotation(Axis.Y, 2, false);
+            // HTM FForward, BBack, UUp, DDown, RRight, LLeft
+            if (Input.GetKeyDown(KeyCode.F))
+                _manager.RotateByWorldDirection(-Camera.main.transform.forward, false);
 
-            // WASD controls for rotation
-            if (Input.GetKeyDown(KeyCode.A))
-                _manager.EnqueueRotation(Axis.X, 0, false);
+            if (Input.GetKeyDown(KeyCode.B))
+                _manager.RotateByWorldDirection(Camera.main.transform.forward, false);
+
+            if (Input.GetKeyDown(KeyCode.U))
+                _manager.RotateByWorldDirection(Camera.main.transform.up, false);
+
             if (Input.GetKeyDown(KeyCode.D))
-                _manager.EnqueueRotation(Axis.X, 2, true);
+                _manager.RotateByWorldDirection(-Camera.main.transform.up, true);
 
+            if (Input.GetKeyDown(KeyCode.R))
+                _manager.RotateByWorldDirection(Camera.main.transform.right, false);
+
+            if (Input.GetKeyDown(KeyCode.L))
+                _manager.RotateByWorldDirection(-Camera.main.transform.right, false);
+
+            // Arrow keys for rotations
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+                _manager.RotateByWorldDirection(Camera.main.transform.right, true);
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                _manager.RotateByWorldDirection(-Camera.main.transform.right, true);
+
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+                _manager.RotateByWorldDirection(Camera.main.transform.up, true);
+
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+                _manager.RotateByWorldDirection(-Camera.main.transform.up, true);
+
+            // Mouse controls for rotations
             if (!Input.GetMouseButtonDown(0)) return;
             if (!Physics.Raycast(_cam.ScreenPointToRay(Input.mousePosition),
                     out var hit, 100f)) return;
