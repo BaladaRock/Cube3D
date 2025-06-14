@@ -454,6 +454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubuletPrefab: {fileID: 1430764997966207921, guid: ec8fdcbf760dea549ab944999a82c499, type: 3}
+  step: 1.05
 --- !u!4 &1856431098
 Transform:
   m_ObjectHideFlags: 0
@@ -494,6 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationTime: 0.25
+  step: 1.05
   ease:
     serializedVersion: 2
     m_Curve:

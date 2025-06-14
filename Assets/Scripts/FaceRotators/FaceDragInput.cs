@@ -4,31 +4,31 @@ namespace Assets.Scripts
 {
     public class FaceDragInput : MonoBehaviour
     {
-        private Camera cam;
-        private Vector2 dragStart;
-        private Vector3 hitNormalOS; // normal in Object Space
-        private CubeManager manager;
-        private CubePiece piece;
+        private Camera _cam;
+        private Vector2 _dragStart;
+        private Vector3 _hitNormalOs; // normal in Object Space
+        private CubeManager _manager;
+        private CubePiece _piece;
 
         private void Awake()
         {
-            cam = Camera.main;
-            manager = GetComponentInParent<CubeManager>();
-            piece = GetComponent<CubePiece>();
+            _cam = Camera.main;
+            _manager = GetComponentInParent<CubeManager>();
+            _piece = GetComponent<CubePiece>();
         }
 
         private void OnMouseDown()
         {
-            dragStart = Input.mousePosition;
+            _dragStart = Input.mousePosition;
 
             // save the normal of the touched face
-            if (Physics.Raycast(cam.ScreenPointToRay(dragStart), out var hit))
-                hitNormalOS = transform.parent.InverseTransformDirection(hit.normal).RoundAxis();
+            if (Physics.Raycast(_cam.ScreenPointToRay(_dragStart), out var hit))
+                _hitNormalOs = transform.parent.InverseTransformDirection(hit.normal).RoundAxis();
         }
 
         private void OnMouseUp()
         {
-            var delta = (Vector2)Input.mousePosition - dragStart;
+            var delta = (Vector2)Input.mousePosition - _dragStart;
 
             if (delta.magnitude < 10f) return; // ignore short clicks
 
@@ -38,40 +38,40 @@ namespace Assets.Scripts
             int layer;
             bool cw;
 
-            // normal will decide the plane of the movement
+            // the normal will decide the plane of the movement
             if (horiz) // drag left -> right
             {
-                if (Mathf.Abs(hitNormalOS.y) > 0.5f)
+                if (Mathf.Abs(_hitNormalOs.y) > 0.5f)
                 {
                     axis = Axis.Y;
-                    layer = piece.Index.y;
+                    layer = _piece.Index.y;
                     cw = delta.x < 0;
                 }
                 else
                 {
                     axis = Axis.Z;
-                    layer = piece.Index.z;
+                    layer = _piece.Index.z;
                     cw = delta.x > 0;
                 } // F/B
             }
             else // drag up -> down
             {
-                if (Mathf.Abs(hitNormalOS.x) > 0.5f)
+                if (Mathf.Abs(_hitNormalOs.x) > 0.5f)
                 {
                     axis = Axis.X;
-                    layer = piece.Index.x;
+                    layer = _piece.Index.x;
                     cw = delta.y > 0;
                 }
                 else
                 {
                     axis = Axis.Z;
-                    layer = piece.Index.z;
+                    layer = _piece.Index.z;
                     cw = delta.y < 0;
                 } // F/B
             }
 
             Debug.Log($"ROTATE axis={axis} layer={layer} cw={cw}");
-            manager.EnqueueRotation(axis, layer, cw);
+            _manager.EnqueueRotation(axis, layer, cw);
         }
     }
 

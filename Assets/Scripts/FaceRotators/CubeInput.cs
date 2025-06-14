@@ -4,45 +4,45 @@ namespace Assets.Scripts
 {
     public class CubeInput : MonoBehaviour
     {
-        CubeManager manager;
-        Camera cam;
+        private CubeManager _manager;
+        private Camera _cam;
 
-        void Awake()
+        private void Awake()
         {
-            manager = GetComponent<CubeManager>();
-            cam = Camera.main;
+            _manager = GetComponent<CubeManager>();
+            _cam = Camera.main;
         }
 
-        void Update()
+        private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F)) manager.EnqueueRotation(Axis.Z, 2, true); 
-            if (Input.GetKeyDown(KeyCode.U)) manager.EnqueueRotation(Axis.Y, 2, true); 
-            if (Input.GetKeyDown(KeyCode.R)) manager.EnqueueRotation(Axis.X, 2, false);
+            if (Input.GetKeyDown(KeyCode.F)) _manager.EnqueueRotation(Axis.Z, 2, true); 
+            if (Input.GetKeyDown(KeyCode.U)) _manager.EnqueueRotation(Axis.Y, 2, true); 
+            if (Input.GetKeyDown(KeyCode.R)) _manager.EnqueueRotation(Axis.X, 2, false);
 
             // arrow controls for rotation
             if (Input.GetKeyDown(KeyCode.RightArrow))
-                manager.EnqueueRotation(Axis.Z, 2, true);
+                _manager.EnqueueRotation(Axis.Z, 2, true);
             if (Input.GetKeyDown(KeyCode.LeftArrow))
-                manager.EnqueueRotation(Axis.Z, 2, false);
+                _manager.EnqueueRotation(Axis.Z, 2, false);
             if (Input.GetKeyDown(KeyCode.UpArrow))
-                manager.EnqueueRotation(Axis.Y, 2, true);
+                _manager.EnqueueRotation(Axis.Y, 2, true);
             if (Input.GetKeyDown(KeyCode.DownArrow))
-                manager.EnqueueRotation(Axis.Y, 2, false);
+                _manager.EnqueueRotation(Axis.Y, 2, false);
 
             // WASD controls for rotation
             if (Input.GetKeyDown(KeyCode.A))
-                manager.EnqueueRotation(Axis.X, 0, false);
+                _manager.EnqueueRotation(Axis.X, 0, false);
             if (Input.GetKeyDown(KeyCode.D))
-                manager.EnqueueRotation(Axis.X, 2, true);
+                _manager.EnqueueRotation(Axis.X, 2, true);
 
             if (!Input.GetMouseButtonDown(0)) return;
-            if (!Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition),
+            if (!Physics.Raycast(_cam.ScreenPointToRay(Input.mousePosition),
                     out var hit, 100f)) return;
 
-            var cubelet = hit.transform.GetComponent<CubePiece>();
-            if (cubelet == null) return;
+            var cubePiece = hit.transform.GetComponent<CubePiece>();
+            if (cubePiece == null) return;
 
-            DecideMoveFromHit(cubelet, hit.normal);
+            DecideMoveFromHit(cubePiece, hit.normal);
         }
 
         private void DecideMoveFromHit(CubePiece c, Vector3 hitNormal)
@@ -53,19 +53,19 @@ namespace Assets.Scripts
             {
                 var layer = c.Index.x;
                 var cw = hitNormal.x < 0;             
-                manager.EnqueueRotation(Axis.X, layer, cw);
+                _manager.EnqueueRotation(Axis.X, layer, cw);
             }
             else if (Mathf.Abs(hitNormal.y) > 0.5f)
             {
                 var layer = c.Index.y;
                 var cw = hitNormal.y < 0;
-                manager.EnqueueRotation(Axis.Y, layer, cw);
+                _manager.EnqueueRotation(Axis.Y, layer, cw);
             }
             else
             {
                 var layer = c.Index.z;
                 var cw = hitNormal.z < 0;
-                manager.EnqueueRotation(Axis.Z, layer, cw);
+                _manager.EnqueueRotation(Axis.Z, layer, cw);
             }
         }
     }

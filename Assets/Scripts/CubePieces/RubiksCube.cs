@@ -2,18 +2,24 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class CubeGenerator : MonoBehaviour
+    public class RubiksCube : MonoBehaviour
     {
-        [SerializeField] GameObject cubuletPrefab;
+        [SerializeField] private readonly GameObject _piecePrefab;
+
+        public RubiksCube(GameObject piecePrefab)
+        {
+            _piecePrefab = piecePrefab;
+        }
+
+        const float step = 1.05f;
 
         private void Awake()
         {
-            const float step = 1.05f;
             for (var x = -1; x <= 1; x++)
             for (var y = -1; y <= 1; y++)
             for (var z = -1; z <= 1; z++)
             {
-                var go = Instantiate(cubuletPrefab, transform);
+                var go = Instantiate(_piecePrefab, transform);
                 go.transform.localPosition = new Vector3(x * step, y * step, z * step);
 
                 var piece = go.GetComponent<CubePiece>();
