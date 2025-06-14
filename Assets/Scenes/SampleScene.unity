@@ -453,8 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ff06a8d336b7f94b864431592bfd57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubuletPrefab: {fileID: 1430764997966207921, guid: ec8fdcbf760dea549ab944999a82c499, type: 3}
-  step: 1.05
+  _piecePrefab: {fileID: 1430764997966207921, guid: ec8fdcbf760dea549ab944999a82c499, type: 3}
 --- !u!4 &1856431098
 Transform:
   m_ObjectHideFlags: 0
@@ -494,9 +493,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547b477a57f2ad845bc1c8fb2a0d43b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationTime: 0.25
-  step: 1.05
-  ease:
+  RotationTime: 0.25
+  Step: 1.05
+  Ease:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3

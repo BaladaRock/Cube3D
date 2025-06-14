@@ -61,8 +61,8 @@ Shader "Custom/RubikSixFaceColor"
 
                 if (n.y >  THRESHOLD)      return _YellowColor;   // top (+Y)
                 else if (n.y < -THRESHOLD) return _WhiteColor;    // bottom (-Y)
-                else if (n.z >  THRESHOLD) return _RedColor;      // front (+Z)
-                else if (n.z < -THRESHOLD) return _OrangeColor;   // back (-Z)
+                else if (n.z >  THRESHOLD) return _OrangeColor;      // front (+Z)
+                else if (n.z < -THRESHOLD) return _RedColor;   // back (-Z)
                 else if (n.x >  THRESHOLD) return _GreenColor;    // right (+X)
                 else if (n.x < -THRESHOLD) return _BlueColor;     // left  (-X)
 
