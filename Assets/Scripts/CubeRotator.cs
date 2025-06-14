@@ -19,6 +19,11 @@ namespace Assets.Scripts
             var rotX = delta.y * RotationSpeed;
             var rotY = -delta.x * RotationSpeed;
 
+            if (!Input.GetKey(KeyCode.LeftAlt))
+            {
+                return;
+            }
+
             if (transform.parent != null)
             {
                 transform.parent.Rotate(Vector3.up, rotY, Space.World);
