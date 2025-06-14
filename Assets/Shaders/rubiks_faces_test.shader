@@ -45,6 +45,10 @@ Shader "Custom/RubikSixFaceColor"
             fixed4 _OrangeColor;
             fixed4 _InteriorColor;
 
+            // use this index to determine if a piece face is external or internal
+            // its value varies between [0, 2]
+            float3 _PieceIdx; 
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -55,18 +59,22 @@ Shader "Custom/RubikSixFaceColor"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                const float THRESHOLD = 0.95;
-
+                const float TH = 0.95;
                 float3 n = normalize(i.normalOS);
 
-                if (n.y >  THRESHOLD)      return _YellowColor;   // top (+Y)
-                else if (n.y < -THRESHOLD) return _WhiteColor;    // bottom (-Y)
-                else if (n.z >  THRESHOLD) return _OrangeColor;      // front (+Z)
-                else if (n.z < -THRESHOLD) return _RedColor;   // back (-Z)
-                else if (n.x >  THRESHOLD) return _GreenColor;    // right (+X)
-                else if (n.x < -THRESHOLD) return _BlueColor;     // left  (-X)
+                // top / bottom
+                if ( n.y >  TH && _PieceIdx.y > 1.5) return _YellowColor; // +Y
+                if ( n.y < -TH && _PieceIdx.y < 0.5) return _WhiteColor;  // -Y
 
-                return _InteriorColor;  // anything else (edges / interior)
+                // front / back
+                if ( n.z < -TH && _PieceIdx.z < 0.5) return _RedColor;     // +Z
+                if ( n.z >  TH && _PieceIdx.z > 1.5) return _OrangeColor;  // -Z
+
+                // right / left
+                if ( n.x >  TH && _PieceIdx.x > 1.5) return _GreenColor;  // +X
+                if ( n.x < -TH && _PieceIdx.x < 0.5) return _BlueColor;   // -X
+
+                return _InteriorColor;                                    // muchii/interior
             }
             ENDCG
         }

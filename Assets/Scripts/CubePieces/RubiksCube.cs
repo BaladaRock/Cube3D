@@ -11,7 +11,7 @@ namespace Assets.Scripts
             this._piecePrefab = piecePrefab;
         }
 
-        private const float Step = 1.05f;
+        private const float Step = 1.04f;
 
         private void Awake()
         {
@@ -28,12 +28,6 @@ namespace Assets.Scripts
         }
     }
 }
-
-
-
-
-
-
 
 //using UnityEngine;
 
