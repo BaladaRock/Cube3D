@@ -9,6 +9,7 @@ namespace Assets.Scripts
     public class CubeManager : MonoBehaviour
     {
         public float rotationTime = 0.25f;
+        public float step = 1.05f; // this should be identical to the distance between the pieces
         public AnimationCurve ease = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         Transform pivot;                        
@@ -38,13 +39,17 @@ namespace Assets.Scripts
 
         // public interface
         public void EnqueueRotation(Axis axis, int layerIdx, bool clockwise)
-            => moveQueue.Enqueue(RotateRoutine(axis, layerIdx, clockwise));
+        {
+            Debug.Log($"QUEUE  axis={axis} layer={layerIdx} cw={clockwise}");
+            moveQueue.Enqueue(RotateRoutine(axis, layerIdx, clockwise));
+        }
 
         // 3️D corutine
         IEnumerator RotateRoutine(Axis axis, int layer, bool cw)
         {
             running = true;
 
+            Debug.Log($"START  axis={axis} layer={layer} cw={cw}");
             // select the cube pieces contained by the layer
             var affected = new List<CubePiece>();
             foreach (CubePiece c in grid)
@@ -98,7 +103,7 @@ namespace Assets.Scripts
 
         Vector3 LayerCenter(Axis a, int l)
         {
-            float off = l - 1;            // −1,0,+1
+            float off = (l - 1) * step;            // −1,0,+1
             return a == Axis.X ? new Vector3(off, 0, 0) :
                 a == Axis.Y ? new Vector3(0, off, 0) :
                 new Vector3(0, 0, off);

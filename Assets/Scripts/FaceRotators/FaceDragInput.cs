@@ -6,7 +6,7 @@ namespace Assets.Scripts
     {
         private Camera cam;
         private Vector2 dragStart;
-        private Vector3 hitNormalOS; // normal în Object Space
+        private Vector3 hitNormalOS; // normal in Object Space
         private CubeManager manager;
         private CubePiece piece;
 
@@ -30,7 +30,7 @@ namespace Assets.Scripts
         {
             var delta = (Vector2)Input.mousePosition - dragStart;
 
-            if (delta.magnitude < 10f) return; // igonre short clicks
+            if (delta.magnitude < 10f) return; // ignore short clicks
 
             var horiz = Mathf.Abs(delta.x) > Mathf.Abs(delta.y);
 
@@ -70,6 +70,7 @@ namespace Assets.Scripts
                 } // F/B
             }
 
+            Debug.Log($"ROTATE axis={axis} layer={layer} cw={cw}");
             manager.EnqueueRotation(axis, layer, cw);
         }
     }
