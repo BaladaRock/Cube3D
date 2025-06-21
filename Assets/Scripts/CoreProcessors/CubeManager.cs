@@ -132,5 +132,17 @@ namespace Assets.Scripts
             EnqueueRotation(axis, layer, clockwise);
         }
 
+        public string GetKociembaState()
+        {
+            // TODO: return the real state string
+            return "dummy_state";
+        }
+
+        public void PlaySolution(string solution)
+        {
+            // TODO: for the future, if we will want to animate the solution
+            Debug.Log($"Would play: {solution}");
+        }
+
     }
 }
