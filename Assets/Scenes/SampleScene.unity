@@ -682,6 +682,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1869aef8c8b6e4a468faeada612eb581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtSolution: {fileID: 2070994759}
+  btnSolve: {fileID: 290794046}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
